@@ -10,5 +10,6 @@ public interface IRequest
     Task<BaseResponse> FetchAsync();
     Request Header(string name, string value);
     Request Method(string method);
+    Request Through(IWire wire);
     UriBuilder Uri();
 }

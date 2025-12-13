@@ -18,7 +18,7 @@ public class Request : IRequest
     private string _method = GET;
     private readonly Dictionary<string, string> _headers;
     private string? _body;
-    private readonly IWire _wire;
+    private IWire _wire;
 
     /// <summary>
     /// Creates a new HTTP request with the specified base URI.
@@ -70,6 +70,15 @@ public class Request : IRequest
     public Request Body(string body)
     {
         _body = body;
+        return this;
+    }
+
+    /// <summary>
+    /// Changes the wire used to send the request.
+    /// </summary>
+    public Request Through(IWire wire)
+    {
+        _wire = wire;
         return this;
     }
 
