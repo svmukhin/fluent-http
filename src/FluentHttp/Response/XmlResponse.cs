@@ -70,10 +70,8 @@ public class XmlResponse : BaseResponse
         return result?.ToString() ?? string.Empty;
     }
 
-    /// <summary>
-    /// Creates a new request following a link from an XPath expression.
-    /// </summary>
-    public new IRequest Rel(string xpath)
+    /// <inheritdoc/>j
+    public override IRequest Rel(string xpath)
     {
         var href = EvaluateXPath(xpath);
         return base.Rel(href);

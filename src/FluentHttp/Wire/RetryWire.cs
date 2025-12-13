@@ -40,9 +40,7 @@ public class RetryWire : IWire
         _shouldRetry = shouldRetry;
     }
 
-    /// <summary>
-    /// Sends an HTTP request asynchronously with retry logic.
-    /// </summary>
+    /// <inheritdoc/>
     public async Task<HttpResponseMessage> SendAsync(string method, string uri, Dictionary<string, string> headers, string? body = null)
     {
         Exception? lastException = null;
@@ -74,9 +72,7 @@ public class RetryWire : IWire
         throw new InvalidOperationException($"Request failed after {_maxRetries + 1} attempts", lastException);
     }
 
-    /// <summary>
-    /// Sends an HTTP request synchronously with retry logic.
-    /// </summary>
+    /// <inheritdoc/>
     public HttpResponseMessage Send(string method, string uri, Dictionary<string, string> headers, string? body = null)
     {
         return SendAsync(method, uri, headers, body).GetAwaiter().GetResult();

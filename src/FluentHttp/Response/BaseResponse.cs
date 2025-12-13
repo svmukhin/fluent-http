@@ -15,14 +15,10 @@ public class BaseResponse : IResponse
         _response = response;
     }
 
-    /// <summary>
-    /// Gets the HTTP status code.
-    /// </summary>
+    /// <inheritdoc/>
     public int StatusCode => (int)_response.StatusCode;
 
-    /// <summary>
-    /// Gets the response content as a string.
-    /// </summary>
+    /// <inheritdoc/>
     public string Content
     {
         get
@@ -32,18 +28,14 @@ public class BaseResponse : IResponse
         }
     }
 
-    /// <summary>
-    /// Converts this response to a specific response type.
-    /// </summary>
+    /// <inheritdoc/>
     public T As<T>() where T : IResponse
     {
         return (T)Activator.CreateInstance(typeof(T), _response)!;
     }
 
-    /// <summary>
-    /// Asserts that the response has the expected status code.
-    /// </summary>
-    public IResponse AssertStatus(int expectedStatus)
+    /// <inheritdoc/>
+    public virtual IResponse AssertStatus(int expectedStatus)
     {
         if (StatusCode != expectedStatus)
         {
@@ -53,10 +45,8 @@ public class BaseResponse : IResponse
         return this;
     }
 
-    /// <summary>
-    /// Gets a header value from the response.
-    /// </summary>
-    public string? GetHeader(string name)
+    /// <inheritdoc/>
+    public virtual string? GetHeader(string name)
     {
         if (_response.Headers.TryGetValues(name, out var values))
         {
@@ -69,10 +59,8 @@ public class BaseResponse : IResponse
         return null;
     }
 
-    /// <summary>
-    /// Creates a new request following a link relation.
-    /// </summary>
-    public IRequest Rel(string href)
+    /// <inheritdoc/>
+    public virtual IRequest Rel(string href)
     {
         // If href is already an absolute URL, use it directly
         if (Uri.IsWellFormedUriString(href, UriKind.Absolute))
@@ -88,10 +76,8 @@ public class BaseResponse : IResponse
         return new BaseRequest(absoluteUri);
     }
 
-    /// <summary>
-    /// Adds a header to a new request (for chaining).
-    /// </summary>
-    public IRequest Header(string name, string value)
+    /// <inheritdoc/>
+    public virtual IRequest Header(string name, string value)
     {
         throw new InvalidOperationException(
             "Cannot add headers directly to a response. Use Rel() to create a new request first.");

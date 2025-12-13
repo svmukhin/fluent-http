@@ -30,9 +30,7 @@ public class UriBuilder : IUriBuilder
 
     internal string BaseUri { get; }
 
-    /// <summary>
-    /// Appends a path segment to the URI.
-    /// </summary>
+    /// <inheritdoc/>
     public IUriBuilder Path(string pathSegment)
     {
         if (!pathSegment.StartsWith("/"))
@@ -43,26 +41,20 @@ public class UriBuilder : IUriBuilder
         return this;
     }
 
-    /// <summary>
-    /// Adds a query parameter to the URI.
-    /// </summary>
+    /// <inheritdoc/>
     public IUriBuilder QueryParam(string name, object value)
     {
         _queryParams[name] = value.ToString() ?? string.Empty;
         return this;
     }
 
-    /// <summary>
-    /// Returns back to the Request object.
-    /// </summary>
+    /// <inheritdoc/>
     public IRequest Back()
     {
         return _request;
     }
 
-    /// <summary>
-    /// Builds the complete URI string.
-    /// </summary>
+    /// <inheritdoc/>
     public string Build()
     {
         var sb = new StringBuilder(BaseUri);

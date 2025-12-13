@@ -23,9 +23,7 @@ public class HttpWire : IWire
         _client = client;
     }
 
-    /// <summary>
-    /// Sends an HTTP request asynchronously.
-    /// </summary>
+    /// <inheritdoc/>
     public async Task<HttpResponseMessage> SendAsync(string method, string uri, Dictionary<string, string> headers, string? body = null)
     {
         using var request = new HttpRequestMessage(new HttpMethod(method), uri);
@@ -40,9 +38,7 @@ public class HttpWire : IWire
         return await _client.SendAsync(request);
     }
 
-    /// <summary>
-    /// Sends an HTTP request synchronously.
-    /// </summary>
+    /// <inheritdoc/>
     public HttpResponseMessage Send(string method, string uri, Dictionary<string, string> headers, string? body = null)
     {
         return SendAsync(method, uri, headers, body).GetAwaiter().GetResult();

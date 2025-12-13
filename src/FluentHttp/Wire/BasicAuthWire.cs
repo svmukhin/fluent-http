@@ -17,9 +17,7 @@ public class BasicAuthWire : IWire
         _value = token;
     }
 
-    /// <summary>
-    /// Sends an HTTP request asynchronously with authorization header.
-    /// </summary>
+    /// <inheritdoc/>
     public Task<HttpResponseMessage> SendAsync(string method, string uri, Dictionary<string, string> headers, string? body = null)
     {
         return _origin.SendAsync(method, uri, new Dictionary<string, string>(headers)
@@ -28,9 +26,7 @@ public class BasicAuthWire : IWire
         }, body);
     }
 
-    /// <summary>
-    /// Sends an HTTP request synchronously with authorization header.
-    /// </summary>
+    /// <inheritdoc/>
     public HttpResponseMessage Send(string method, string uri, Dictionary<string, string> headers, string? body = null)
     {
         return _origin.Send(method, uri, new Dictionary<string, string>(headers)

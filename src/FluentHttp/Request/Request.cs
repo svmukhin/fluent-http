@@ -40,54 +40,42 @@ public class BaseRequest : IRequest
         _wire = wire;
     }
 
-    /// <summary>
-    /// Gets the URI builder for constructing the request URI.
-    /// </summary>
+    /// <inheritdoc/>
     public UriBuilder Uri()
     {
         _uriBuilder ??= new UriBuilder(this, _baseUri);
         return _uriBuilder;
     }
 
-    /// <summary>
-    /// Sets the HTTP method for the request.
-    /// </summary>
+    /// <inheritdoc/>
     public IRequest Method(string method)
     {
         _method = method;
         return this;
     }
 
-    /// <summary>
-    /// Adds a header to the request.
-    /// </summary>
+    /// <inheritdoc/>
     public IRequest Header(string name, string value)
     {
         _headers[name] = value;
         return this;
     }
 
-    /// <summary>
-    /// Sets the request body.
-    /// </summary>
+    /// <inheritdoc/>
     public IRequest Body(string body)
     {
         _body = body;
         return this;
     }
 
-    /// <summary>
-    /// Changes the wire used to send the request.
-    /// </summary>
+    /// <inheritdoc/>
     public IRequest Through(IWire wire)
     {
         _wire = wire;
         return this;
     }
 
-    /// <summary>
-    /// Executes the HTTP request and returns a response.
-    /// </summary>
+    /// <inheritdoc/>
     public async Task<BaseResponse> FetchAsync()
     {
         var uri = _uriBuilder?.Build() ?? _baseUri;
@@ -95,9 +83,7 @@ public class BaseRequest : IRequest
         return new BaseResponse(response);
     }
 
-    /// <summary>
-    /// Executes the HTTP request synchronously and returns a response.
-    /// </summary>
+    /// <inheritdoc/>
     public BaseResponse Fetch()
     {
         return FetchAsync().GetAwaiter().GetResult();
