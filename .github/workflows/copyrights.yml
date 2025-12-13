@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: Copyright (c) [2025] [Sergei Mukhin]
 # SPDX-License-Identifier: MIT
 ---
-name: markdown-lint
+name: copyrights
 "on":
   push:
     branches:
@@ -9,14 +9,10 @@ name: markdown-lint
   pull_request:
     branches:
       - master
-    paths-ignore: ["paper/**", "sandbox/**"]
-concurrency:
-  group: markdown-lint-${{ github.ref }}
-  cancel-in-progress: true
 jobs:
-  markdown-lint:
+  copyrights:
     timeout-minutes: 15
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v6
-      - uses: DavidAnson/markdownlint-cli2-action@v22.0.0
+      - uses: yegor256/copyrights-action@0.0.12

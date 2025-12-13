@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: Copyright (c) [2025] [Sergei Mukhin]
+// SPDX-License-Identifier: MIT
+
 namespace FluentHttp.Tests.Wire.Mocks;
 
 public class MockHttpMessageHandler : HttpMessageHandler
