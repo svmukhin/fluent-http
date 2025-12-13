@@ -18,6 +18,9 @@ jobs:
         uses: actions/setup-dotnet@v5
         with:
           dotnet-version: "8.0.x"
+      - name: Check code formatting
+        run: dotnet format --verify-no-changes --verbosity diagnostic
+        working-directory: ./src
       - name: Restore dependencies
         run: dotnet restore
         working-directory: ./src
