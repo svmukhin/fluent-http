@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
@@ -12,5 +12,8 @@
         <PackageReference Include="MSTest.TestAdapter" />
         <PackageReference Include="MSTest.TestFramework" />
         <PackageReference Include="coverlet.collector" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\FluentHttp\FluentHttp.csproj" />
     </ItemGroup>
 </Project>
