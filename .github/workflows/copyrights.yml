@@ -16,3 +16,8 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: yegor256/copyrights-action@0.0.12
+        with:
+          license: LICENSE.txt
+          globs: >-
+            src/**/*.cs
+            **/*.yml
