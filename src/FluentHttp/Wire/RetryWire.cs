@@ -58,10 +58,17 @@ public class RetryWire : IWire
                 }
                 return response;
             }
-            catch (Exception ex) when (attempt < _maxRetries && IsTransientError(ex))
+            catch (Exception ex) when (IsTransientError(ex))
             {
                 lastException = ex;
-                await Task.Delay(_delayBetweenRetries);
+                if (attempt < _maxRetries)
+                {
+                    await Task.Delay(_delayBetweenRetries);
+                }
+                else
+                {
+                    throw new InvalidOperationException($"Request failed after {_maxRetries + 1} attempts", ex);
+                }
             }
         }
         throw new InvalidOperationException($"Request failed after {_maxRetries + 1} attempts", lastException);
