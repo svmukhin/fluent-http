@@ -66,7 +66,8 @@ string name = new Request("https://www.example.com:8080")
 
 ## Wire System
 
-FluentHttp uses a wire system for sending HTTP requests, allowing you to customize and extend request handling through decorators.
+FluentHttp uses a wire system for sending HTTP requests, allowing
+you to customize and extend request handling through decorators.
 
 ### Basic Wire Usage
 
