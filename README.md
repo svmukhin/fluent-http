@@ -1,4 +1,4 @@
-# FluentHttp
+# SergeiM.Http
 
 A fluent HTTP client library for .NET that provides a pure OOP
 approach to building and executing HTTP requests with method chaining.
@@ -6,7 +6,7 @@ approach to building and executing HTTP requests with method chaining.
 ## Installation
 
 ```bash
-dotnet add package FluentHttp
+dotnet add package SergeiM.Http
 ```
 
 ## Quick Start
@@ -66,7 +66,7 @@ string name = new Request("https://www.example.com:8080")
 
 ## Wire System
 
-FluentHttp uses a wire system for sending HTTP requests, allowing
+SergeiM.Http uses a wire system for sending HTTP requests, allowing
 you to customize and extend request handling through decorators.
 
 ### Basic Wire Usage
