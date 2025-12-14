@@ -1,5 +1,10 @@
 # SergeiM.Http
 
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/svmukhin/sergeim-http/build.yml)
+![NuGet Version](https://img.shields.io/nuget/v/SergeiM.Http?color=%230000FF)
+[![Hits-of-Code](https://hitsofcode.com/github/svmukhin/sergeim-http?exclude=)](https://hitsofcode.com/github/svmukhin/sergeim-http/view?exclude=)
+![GitHub License](https://img.shields.io/github/license/svmukhin/sergeim-http)
+
 A fluent HTTP client library for .NET that provides a pure OOP
 approach to building and executing HTTP requests with method chaining.
 
