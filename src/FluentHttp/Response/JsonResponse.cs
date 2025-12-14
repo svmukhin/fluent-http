@@ -13,6 +13,10 @@ public class JsonResponse : BaseResponse
     private JsonDocument? _jsonDocument;
     private JsonElement? _rootElement;
 
+    /// <summary>
+    /// Initializes a new instance of the JsonResponse class.
+    /// </summary>
+    /// <param name="response">The HTTP response message to wrap.</param>
     public JsonResponse(HttpResponseMessage response) : base(response)
     {
     }

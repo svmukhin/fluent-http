@@ -14,6 +14,10 @@ public class XmlResponse : BaseResponse
     private XmlDocument? _xmlDocument;
     private XPathNavigator? _navigator;
 
+    /// <summary>
+    /// Initializes a new instance of the XmlResponse class.
+    /// </summary>
+    /// <param name="response">The HTTP response message to wrap.</param>
     public XmlResponse(HttpResponseMessage response) : base(response)
     {
     }

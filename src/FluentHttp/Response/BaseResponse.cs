@@ -10,9 +10,15 @@ namespace FluentHttp.Response;
 /// </summary>
 public class BaseResponse : IResponse
 {
+    /// <summary>The underlying HTTP response message.</summary>
     protected readonly HttpResponseMessage _response;
+    /// <summary>Cached response content string.</summary>
     protected string? _content;
 
+    /// <summary>
+    /// Initializes a new instance of the BaseResponse class.
+    /// </summary>
+    /// <param name="response">The HTTP response message to wrap.</param>
     public BaseResponse(HttpResponseMessage response)
     {
         _response = response;

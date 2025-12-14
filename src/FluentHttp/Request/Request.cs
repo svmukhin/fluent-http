@@ -11,12 +11,19 @@ namespace FluentHttp.Request;
 /// </summary>
 public class BaseRequest : IRequest
 {
+    /// <summary>HTTP GET method constant.</summary>
     public const string GET = "GET";
+    /// <summary>HTTP POST method constant.</summary>
     public const string POST = "POST";
+    /// <summary>HTTP PUT method constant.</summary>
     public const string PUT = "PUT";
+    /// <summary>HTTP DELETE method constant.</summary>
     public const string DELETE = "DELETE";
+    /// <summary>HTTP PATCH method constant.</summary>
     public const string PATCH = "PATCH";
+    /// <summary>HTTP HEAD method constant.</summary>
     public const string HEAD = "HEAD";
+    /// <summary>HTTP OPTIONS method constant.</summary>
     public const string OPTIONS = "OPTIONS";
 
     private readonly string _baseUri;
