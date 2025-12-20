@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: Copyright (c) [2025] [Sergei Mukhin]
 // SPDX-License-Identifier: MIT
 
-using SergeiM.Http.Responsse;
+using SergeiM.Http.Response;
 
 namespace SergeiM.Http.Tests;
 
@@ -13,9 +13,10 @@ public class JsonResponseTests
     {
         var json = """{"name": "John Doe", "age": 30, "active": true}""";
         var response = new JsonResponse(CreateMockJsonResponse(json));
-        var name = response.Json().GetJsonObject().GetString("name");
-        var age = response.Json().GetJsonObject().GetInt("age");
-        var active = response.Json().GetJsonObject().GetBoolean("active");
+        var obj = response.AsObject();
+        var name = obj.GetString("name");
+        var age = obj.GetInt("age");
+        var active = obj.GetBoolean("active");
         Assert.AreEqual("John Doe", name);
         Assert.AreEqual(30, age);
         Assert.AreEqual(true, active);
@@ -24,21 +25,21 @@ public class JsonResponseTests
     [TestMethod]
     public void JsonResponse_ShouldAccessNestedProperties()
     {
-        var json = """{"user": {"name": "Jane", "email": "jane@example.com"}}""";
+        var json = @"{""user"": {""name"": ""Jane"", ""email"": ""jane@example.com""}}";
         var response = new JsonResponse(CreateMockJsonResponse(json));
-        var name = response.Json().GetJsonObject()
-            .GetJsonObject("user")
-            .GetString("name");
+        var obj = response.AsObject();
+        var name = obj.GetJsonObject("user")!.GetString("name");
         Assert.AreEqual("Jane", name);
     }
 
     [TestMethod]
     public void JsonArray_ShouldAccessElements()
     {
-        var json = """{"items": ["apple", "banana", "cherry"]}""";
+        var json = @"{""items"": [""apple"", ""banana"", ""cherry""]}";
         var response = new JsonResponse(CreateMockJsonResponse(json));
-        var items = response.Json().GetJsonObject().GetJsonArray("items");
-        Assert.AreEqual(3, items.Length);
+        var obj = response.AsObject();
+        var items = obj.GetJsonArray("items")!;
+        Assert.AreEqual(3, items.Count);
         Assert.AreEqual("apple", items.GetString(0));
         Assert.AreEqual("banana", items.GetString(1));
     }

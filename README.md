@@ -28,13 +28,17 @@ var response = new Request("https://api.example.com")
 ### JSON Response
 
 ```csharp
-string userName = new Request("https://api.example.com")
+var response = new Request("https://api.example.com")
     .Uri().Path("/users").QueryParam("id", 123).Back()
     .Header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON)
     .Fetch()
     .As<JsonResponse>()
-    .AssertStatus(200)
-    .Json().GetJsonObject().GetString("name");
+    .AssertStatus(200);
+
+var user = response.AsObject();
+string userName = user.GetString("name");
+int age = user.GetInt("age");
+bool isActive = user.GetBoolean("is_active", false);
 ```
 
 ### XML Response with XPath
@@ -65,8 +69,6 @@ string name = new Request("https://www.example.com:8080")
     .Rel("/page/links/link[@rel='see']/@href")
     .Header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON)
     .Fetch()
-    .As<JsonResponse>()
-    .Json().GetJsonObject().GetString("name");
 ```
 
 ## Wire System

@@ -2,17 +2,17 @@
 // SPDX-License-Identifier: MIT
 
 using System.Text.Json;
-using SergeiM.Http.Response;
+using SergeiM.Json;
 
-namespace SergeiM.Http.Responsse;
+namespace SergeiM.Http.Response;
 
 /// <summary>
-/// HTTP response with JSON parsing capabilities.
+/// HTTP response with JSON parsing capabilities using SergeiM.Json library.
+/// Provides direct access to immutable JSON types.
 /// </summary>
 public class JsonResponse : BaseResponse
 {
-    private JsonDocument? _jsonDocument;
-    private JsonElement? _rootElement;
+    private JsonValue? _jsonValue;
 
     /// <summary>
     /// Initializes a new instance of the JsonResponse class.
@@ -23,179 +23,61 @@ public class JsonResponse : BaseResponse
     }
 
     /// <summary>
-    /// Gets the parsed JSON document.
+    /// Gets the parsed JSON value (immutable).
     /// </summary>
-    public JsonDocument JsonDocument
+    public JsonValue Value
     {
         get
         {
-            _jsonDocument ??= JsonDocument.Parse(Content);
-            return _jsonDocument;
+            if (_jsonValue == null)
+            {
+                using var reader = SergeiM.Json.Json.CreateReader(new StringReader(Content));
+                _jsonValue = reader.Read();
+            }
+            return _jsonValue;
         }
     }
 
     /// <summary>
-    /// Provides access to the JSON structure.
+    /// Gets the JSON value as a JsonObject.
     /// </summary>
-    public JsonNavigator Json()
+    /// <returns>The JSON object.</returns>
+    /// <exception cref="InvalidOperationException">If the JSON value is not an object.</exception>
+    public JsonObject AsObject()
     {
-        return new JsonNavigator(this);
+        return Value as JsonObject
+            ?? throw new InvalidOperationException("JSON value is not an object.");
     }
 
     /// <summary>
-    /// Gets the root JSON element.
+    /// Gets the JSON value as a JsonArray.
     /// </summary>
-    internal JsonElement RootElement
+    /// <returns>The JSON array.</returns>
+    /// <exception cref="InvalidOperationException">If the JSON value is not an array.</exception>
+    public JsonArray AsArray()
     {
-        get
-        {
-            _rootElement ??= JsonDocument.RootElement;
-            return _rootElement.Value;
-        }
-    }
-}
-
-/// <summary>
-/// Navigator for traversing JSON structures.
-/// </summary>
-public class JsonNavigator
-{
-    private readonly JsonResponse _response;
-
-    internal JsonNavigator(JsonResponse response)
-    {
-        _response = response;
+        return Value as JsonArray
+            ?? throw new InvalidOperationException("JSON value is not an array.");
     }
 
     /// <summary>
-    /// Gets the root JSON element as a JsonObject.
+    /// Deserializes the JSON response directly to the specified type using System.Text.Json.
     /// </summary>
-    public JsonObject GetJsonObject()
+    /// <typeparam name="T">The type to deserialize to.</typeparam>
+    /// <returns>The deserialized object.</returns>
+    public T? Deserialize<T>()
     {
-        return new JsonObject(_response.RootElement);
+        return JsonSerializer.Deserialize<T>(Content);
     }
 
     /// <summary>
-    /// Gets the root JSON element as a JsonArray.
+    /// Deserializes the JSON response directly to the specified type with custom options.
     /// </summary>
-    public JsonArray GetJsonArray()
+    /// <typeparam name="T">The type to deserialize to.</typeparam>
+    /// <param name="options">Options to control the behavior during deserialization.</param>
+    /// <returns>The deserialized object.</returns>
+    public T? Deserialize<T>(JsonSerializerOptions options)
     {
-        return new JsonArray(_response.RootElement);
-    }
-}
-
-/// <summary>
-/// Wrapper for JSON object operations.
-/// </summary>
-public class JsonObject
-{
-    private readonly JsonElement _element;
-
-    internal JsonObject(JsonElement element)
-    {
-        if (element.ValueKind != JsonValueKind.Object)
-        {
-            throw new InvalidOperationException("JSON element is not an object.");
-        }
-        _element = element;
-    }
-
-    /// <summary>
-    /// Gets a string property value.
-    /// </summary>
-    public string GetString(string propertyName)
-    {
-        if (_element.TryGetProperty(propertyName, out var property))
-        {
-            return property.GetString() ?? string.Empty;
-        }
-        throw new InvalidOperationException($"Property '{propertyName}' not found in JSON object.");
-    }
-
-    /// <summary>
-    /// Gets an integer property value.
-    /// </summary>
-    public int GetInt(string propertyName)
-    {
-        if (_element.TryGetProperty(propertyName, out var property))
-        {
-            return property.GetInt32();
-        }
-        throw new InvalidOperationException($"Property '{propertyName}' not found in JSON object.");
-    }
-
-    /// <summary>
-    /// Gets a boolean property value.
-    /// </summary>
-    public bool GetBoolean(string propertyName)
-    {
-        if (_element.TryGetProperty(propertyName, out var property))
-        {
-            return property.GetBoolean();
-        }
-        throw new InvalidOperationException($"Property '{propertyName}' not found in JSON object.");
-    }
-
-    /// <summary>
-    /// Gets a nested JSON object.
-    /// </summary>
-    public JsonObject GetJsonObject(string propertyName)
-    {
-        if (_element.TryGetProperty(propertyName, out var property))
-        {
-            return new JsonObject(property);
-        }
-        throw new InvalidOperationException($"Property '{propertyName}' not found in JSON object.");
-    }
-
-    /// <summary>
-    /// Gets a JSON array property.
-    /// </summary>
-    public JsonArray GetJsonArray(string propertyName)
-    {
-        if (_element.TryGetProperty(propertyName, out var property))
-        {
-            return new JsonArray(property);
-        }
-        throw new InvalidOperationException($"Property '{propertyName}' not found in JSON object.");
-    }
-}
-
-/// <summary>
-/// Wrapper for JSON array operations.
-/// </summary>
-public class JsonArray
-{
-    private readonly JsonElement _element;
-
-    internal JsonArray(JsonElement element)
-    {
-        if (element.ValueKind != JsonValueKind.Array)
-        {
-            throw new InvalidOperationException("JSON element is not an array.");
-        }
-        _element = element;
-    }
-
-    /// <summary>
-    /// Gets the length of the array.
-    /// </summary>
-    public int Length => _element.GetArrayLength();
-
-    /// <summary>
-    /// Gets a JSON object at the specified index.
-    /// </summary>
-    public JsonObject GetJsonObject(int index)
-    {
-        var element = _element[index];
-        return new JsonObject(element);
-    }
-
-    /// <summary>
-    /// Gets a string value at the specified index.
-    /// </summary>
-    public string GetString(int index)
-    {
-        return _element[index].GetString() ?? string.Empty;
+        return JsonSerializer.Deserialize<T>(Content, options);
     }
 }
