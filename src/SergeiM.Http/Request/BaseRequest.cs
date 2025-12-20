@@ -107,13 +107,10 @@ public class BaseRequest : IRequest
     {
         var uri = _uriBuilder?.Build() ?? _baseUri;
         var headers = new Dictionary<string, string>(_headers);
-        
-        // Add Content-Type header if body and contentType are set
         if (_body != null && _contentType != null && !headers.ContainsKey(HttpHeaders.CONTENT_TYPE))
         {
             headers[HttpHeaders.CONTENT_TYPE] = _contentType;
         }
-        
         var response = await _wire.SendAsync(_method, uri, headers, _body);
         return new BaseResponse(response);
     }

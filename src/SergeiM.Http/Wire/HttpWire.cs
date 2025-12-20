@@ -43,7 +43,7 @@ public class HttpWire : IWire
         }
         if (body != null)
         {
-            request.Content = contentType != null 
+            request.Content = contentType != null
                 ? new StringContent(body, System.Text.Encoding.UTF8, contentType)
                 : new StringContent(body);
         }
